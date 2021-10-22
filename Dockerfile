@@ -8,8 +8,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Install build deps
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends build-essential
-
+RUN apt-get install -y --no-install-recommends build-essential libpq-dev
 # Install runtime deps
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
@@ -19,6 +18,9 @@ RUN pip install pylightning
 
 # Install LND specific deps
 RUN pip install lndgrpc purerpc
+
+# Install postsres deps
+RUN pip install psycopg2
 
 # Production image
 FROM python:3.7-slim as lnbits
