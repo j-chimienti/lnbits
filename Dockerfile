@@ -19,18 +19,19 @@ RUN pip install pylightning
 # Install LND specific deps
 # RUN pip install lndgrpc purerpc
 
-# Install postsres deps
-RUN apt-get install -y --no-install-recommends libpq-dev
-RUN pip install psycopg2
 
 # Production image
-FROM python:3.7-slim as lnbits
+FROM python:3.7 as lnbits
 
 
 # Copy over virtualenv
 ENV VIRTUAL_ENV="/opt/venv"
 COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+# Install postsres deps
+RUN apt-get install -y --no-install-recommends libpq-dev
+RUN pip install psycopg2
+
 
 # Setup Quart
 ENV QUART_APP="lnbits.app:create_app()"
@@ -43,8 +44,6 @@ ENV LNBITS_BIND="0.0.0.0:5000"
 # Copy in app source
 WORKDIR /app
 COPY lnbits /app/lnbits
-
-RUN mkdir /app/lnbits/data
 
 EXPOSE 5000
 
