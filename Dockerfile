@@ -8,7 +8,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Install build deps
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends build-essential libpq-dev
+RUN apt-get install -y --no-install-recommends build-essential
 # Install runtime deps
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
@@ -17,9 +17,10 @@ RUN pip install -r /tmp/requirements.txt
 RUN pip install pylightning
 
 # Install LND specific deps
-RUN pip install lndgrpc purerpc
+# RUN pip install lndgrpc purerpc
 
 # Install postsres deps
+RUN apt-get install -y --no-install-recommends libpq-dev
 RUN pip install psycopg2
 
 # Production image
@@ -42,6 +43,8 @@ ENV LNBITS_BIND="0.0.0.0:5000"
 # Copy in app source
 WORKDIR /app
 COPY lnbits /app/lnbits
+
+RUN mkdir /app/lnbits/data
 
 EXPOSE 5000
 
