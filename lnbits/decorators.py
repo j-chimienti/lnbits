@@ -66,6 +66,8 @@ def check_user_exists(param: str = "usr"):
             g.user = await get_user(request.args.get(param, type=str)) or abort(
                 HTTPStatus.NOT_FOUND, "User  does not exist."
             )
+            print("userId = " + g.user.id)
+            print("LNBITS_ALLOWED_USERS =" + LNBITS_ALLOWED_USERS)
 
             if LNBITS_ALLOWED_USERS and g.user.id not in LNBITS_ALLOWED_USERS:
                 abort(HTTPStatus.UNAUTHORIZED, "User not authorized.")
