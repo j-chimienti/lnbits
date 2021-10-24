@@ -21,7 +21,7 @@ RUN pip install pylightning
 
 
 # Production image
-FROM python:3.7 as lnbits
+FROM python:3.7-slim as lnbits
 
 
 # Copy over virtualenv
